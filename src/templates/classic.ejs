@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%- data.personalInfo.name %> - CV</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="<%- data.template %>">
+  
+  <!-- Personal Info Section -->
+  <div class="section">
+    <h1><%- data.personalInfo.name %></h1>
+    <p>Email: <%- data.personalInfo.email %> | Contact: <%- data.personalInfo.contact %></p>
+    <p>
+      <% if (data.personalInfo.linkedin) { %>
+        LinkedIn: <%- data.personalInfo.linkedin %> |
+      <% } %>
+      <% if (data.personalInfo.github) { %>
+        GitHub: <%- data.personalInfo.github %>
+      <% } %>
+      <% if (data.personalInfo.portfolio) { %>
+        | Portfolio: <%- data.personalInfo.portfolio %>
+      <% } %>
+    </p>
+  </div>
+
+  <!-- Skills Section -->
+  <% if (data.skills.length) { %>
+  <div class="section">
+    <h2>Skills</h2>
+    <ul>
+      <% data.skills.forEach(skill => { %>
+        <li class="highlight"><%- skill %></li>
+      <% }) %>
+    </ul>
+  </div>
+  <% } %>
+
+  <!-- Work Experience Section -->
+  <% if (data.workExperience.length) { %>
+  <div class="section">
+    <h2>Work Experience</h2>
+    <% data.workExperience.forEach(exp => { %>
+      <p><strong><%- exp.role %> at <%- exp.company %></strong> (<%- exp.startDate %> - <%- exp.endDate || "Present" %>)</p>
+      <p><%- exp.description %></p>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <!-- Projects Section -->
+  <% if (data.projects.length) { %>
+  <div class="section">
+    <h2>Projects</h2>
+    <% data.projects.forEach(project => { %>
+      <p><strong><%- project.title %></strong></p>
+      <p><%- project.description %></p>
+      <% if (project.link) { %>
+        <p>Link: <a href="<%- project.link %>"><%- project.link %></a></p>
+      <% } %>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <!-- Achievements Section -->
+  <% if (data.achievements.length) { %>
+  <div class="section">
+    <h2>Achievements</h2>
+    <ul>
+      <% data.achievements.forEach(a => { %>
+        <li class="highlight"><%- a %></li>
+      <% }) %>
+    </ul>
+  </div>
+  <% } %>
+
+</body>
+</html>

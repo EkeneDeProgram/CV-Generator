@@ -1,0 +1,51 @@
+/* .highlight {
+    background-color: #ffeb3b;
+    font-weight: bold;
+} */
+
+
+/* Theme Classes */
+.classic {
+    font-family: Arial, sans-serif;
+    color: #000000;
+}
+
+.modern {
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333333;
+}
+
+.creative {
+    font-family: 'Courier New', monospace;
+    color: #555555;
+}
+
+/* Highlight keywords in skills, projects, achievements, etc. */
+.highlight {
+    background-color: #ffeb3b;
+    font-weight: bold;
+}
+
+/* General CV styling */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 1.2em;
+    margin-top: 0;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+ul {
+    padding-left: 20px;
+}
