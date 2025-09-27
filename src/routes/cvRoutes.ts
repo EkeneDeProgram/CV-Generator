@@ -1,24 +1,3 @@
-// // Imports: Express Router and controller functions for CV operations
-// import { Router } from "express";
-// import { generateCV, previewCV, downloadPDF, downloadDOCX } from "../controllers/cvController";
-
-
-// // Create a new Express Router instance
-// const router = Router();
-
-
-// // Define CV-related routes
-// // All routes use POST since they handle data submitted from the frontend
-// router.post("/generate", generateCV);
-// router.post("/preview", previewCV);
-// router.post("/download/pdf", downloadPDF);
-// router.post("/download/docx", downloadDOCX);
-
-
-// // Export the router to be mounted in app.ts under /api/cv
-// export default router;
-
-
 import { Router } from "express";
 import { generateCV, previewCV, downloadPDF, downloadDOCX } from "../controllers/cvController";
 

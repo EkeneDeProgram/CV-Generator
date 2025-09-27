@@ -16,7 +16,7 @@ export interface WorkExperience {
     role: string;  
     startDate: string; 
     endDate?: string;   
-    description: string;  
+    description: string | string[];  
 }
 
 // Education history: schools, degrees, certifications
@@ -30,7 +30,7 @@ export interface Education {
 // Projects: portfolio work, side projects, case studies
 export interface Project {
     title: string; 
-    description: string; 
+    description: string | string[]; 
     link?: string; 
 }
 
@@ -43,6 +43,7 @@ export interface Skill {
 
 // Extra structured parts for DOCX rendering
 export interface DocxParts {
+    summary: any[]; 
     workExperience: any[];  
     projects: any[];        
     achievements: any[];    
@@ -51,12 +52,13 @@ export interface DocxParts {
 // The complete CV structure that ties everything together
 export interface CVData {
     personalInfo: PersonalInfo;
+    summary?: string;
     workExperience: WorkExperience[]; 
     education: Education[]; 
     projects: Project[];
     skills: Skill[];                 // ✅ Added skills here
     achievements: string[];
-    template: "classic" | "modern" | "creative"; 
+    template: "classic" | "modern" | "creative" | "card-based" | "two-column" | "two-column-pro" | "modern-pro" | "card-based-pro"; 
     colorScheme: string;          
     fontStyle: string;  
     _docxParts?: DocxParts;

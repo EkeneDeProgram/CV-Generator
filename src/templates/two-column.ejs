@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%- data.personalInfo.name %> — Two Column CV</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    :root {
+      --accent: #2c3e50;
+      --muted: #7f8c8d;
+      --bg: #f9fbfc;
+      --card: #ffffff;
+      --highlight-bg: #ffeaa7;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: #222;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+      color: var(--accent);
+    }
+
+    header .meta {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    section {
+      margin-bottom: 24px;
+      background: var(--card);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+
+    section h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: var(--accent);
+      border-bottom: 2px solid #eaeaea;
+      padding-bottom: 6px;
+    }
+
+    .entry {
+      margin-bottom: 16px;
+    }
+
+    .entry .title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .entry .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .highlight {
+      background-color: var(--highlight-bg);
+      font-weight: 700;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <header>
+      <h1><%- data.personalInfo.name %></h1>
+      <div class="meta">
+        <span><%- data.personalInfo.email %></span> ·
+        <span><%- data.personalInfo.contact %></span>
+        <% if (data.personalInfo.linkedin) { %> · <a href="<%- data.personalInfo.linkedin %>">LinkedIn</a><% } %>
+        <% if (data.personalInfo.github) { %> · <a href="<%- data.personalInfo.github %>">GitHub</a><% } %>
+      </div>
+    </header>
+
+    <!-- Two Columns -->
+    <div class="columns">
+      <!-- Left Column -->
+      <div>
+        <% if (data.summary) { %>
+          <section>
+            <h2>Summary</h2>
+            <p><%- data.summary %></p>
+          </section>
+        <% } %>
+
+        <% if (data.workExperience && data.workExperience.length) { %>
+          <section>
+            <h2>Work Experience</h2>
+            <% data.workExperience.forEach(function(exp){ %>
+              <div class="entry">
+                <div class="title"><%- exp.role %> — <%- exp.company %></div>
+                <div class="meta"><%- exp.startDate %> - <%- exp.endDate || 'Present' %></div>
+                <div><%- exp.description %></div>
+              </div>
+            <% }) %>
+          </section>
+        <% } %>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <% if (data.skills && data.skills.length) { %>
+          <section>
+            <h2>Skills</h2>
+            <% data.skills.forEach(function(s){ %>
+              <div class="entry">
+                <div class="title"><%- s.category %></div>
+                <div><%- s.items.join(", ") %></div>
+              </div>
+            <% }) %>
+          </section>
+        <% } %>
+
+        <% if (data.projects && data.projects.length) { %>
+          <section>
+            <h2>Projects</h2>
+            <% data.projects.forEach(function(p){ %>
+              <div class="entry">
+                <div class="title"><%- p.title %></div>
+                <div class="meta"><%- p.link ? '<a href="'+p.link+'">'+p.link+'</a>' : '' %></div>
+                <div><%- p.description %></div>
+              </div>
+            <% }) %>
+          </section>
+        <% } %>
+
+        <% if (data.education && data.education.length) { %>
+          <section>
+            <h2>Education</h2>
+            <% data.education.forEach(function(edu){ %>
+              <div class="entry">
+                <div class="title"><%- edu.degree %></div>
+                <div class="meta"><%- edu.institution %> · <%- edu.startDate %> - <%- edu.endDate || 'Present' %></div>
+              </div>
+            <% }) %>
+          </section>
+        <% } %>
+
+        <% if (data.achievements && data.achievements.length) { %>
+          <section>
+            <h2>Achievements</h2>
+            <ul>
+              <% data.achievements.forEach(function(a){ %>
+                <li><%- a %></li>
+              <% }) %>
+            </ul>
+          </section>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

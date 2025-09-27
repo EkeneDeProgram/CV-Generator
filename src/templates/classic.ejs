@@ -4,6 +4,51 @@
   <meta charset="UTF-8">
   <title><%- data.personalInfo.name %> - CV</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 20px;
+      line-height: 1.6;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      color: #3498db;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 3px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Highlighted keyword style */
+    .highlight {
+      background-color: #ffeaa7;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body class="<%- data.template %>">
   
@@ -13,26 +58,44 @@
     <p>Email: <%- data.personalInfo.email %> | Contact: <%- data.personalInfo.contact %></p>
     <p>
       <% if (data.personalInfo.linkedin) { %>
-        LinkedIn: <%- data.personalInfo.linkedin %> |
+        LinkedIn: <a href="<%- data.personalInfo.linkedin %>"><%- data.personalInfo.linkedin %></a>
       <% } %>
       <% if (data.personalInfo.github) { %>
-        GitHub: <%- data.personalInfo.github %>
+        <% if (data.personalInfo.linkedin) { %> | <% } %>
+        GitHub: <a href="<%- data.personalInfo.github %>"><%- data.personalInfo.github %></a>
       <% } %>
       <% if (data.personalInfo.portfolio) { %>
-        | Portfolio: <%- data.personalInfo.portfolio %>
+        <% if (data.personalInfo.linkedin || data.personalInfo.github) { %> | <% } %>
+        Portfolio: <a href="<%- data.personalInfo.portfolio %>"><%- data.personalInfo.portfolio %></a>
+      <% } %>
+      <% if (data.personalInfo.socialLinks && data.personalInfo.socialLinks.length) { %>
+        <% data.personalInfo.socialLinks.forEach(link => { %> | 
+          <a href="<%- link %>"><%- link %></a>
+        <% }) %>
       <% } %>
     </p>
   </div>
+
+  <!-- ✅ Professional Summary Section -->
+  <% if (data.summary) { %>
+  <div class="section">
+    <h2>Professional Summary</h2>
+    <p><%- data.summary %></p>
+  </div>
+  <% } %>
 
   <!-- Skills Section -->
   <% if (data.skills.length) { %>
   <div class="section">
     <h2>Skills</h2>
-    <ul>
-      <% data.skills.forEach(skill => { %>
-        <li class="highlight"><%- skill %></li>
-      <% }) %>
-    </ul>
+    <% data.skills.forEach(skillGroup => { %>
+      <p><strong><%- skillGroup.category %>:</strong></p>
+      <ul>
+        <% skillGroup.items.forEach(item => { %>
+          <li class="highlight"><%- item %></li>
+        <% }) %>
+      </ul>
+    <% }) %>
   </div>
   <% } %>
 
@@ -46,6 +109,7 @@
     <% }) %>
   </div>
   <% } %>
+
 
   <!-- Projects Section -->
   <% if (data.projects.length) { %>
@@ -61,13 +125,23 @@
   </div>
   <% } %>
 
+  <!-- Education Section -->
+  <% if (data.education.length) { %>
+  <div class="section">
+    <h2>Education</h2>
+    <% data.education.forEach(edu => { %>
+      <p><strong><%- edu.degree %></strong> at <%- edu.institution %> (<%- edu.startDate %> - <%- edu.endDate || "Present" %>)</p>
+    <% }) %>
+  </div>
+  <% } %>
+
   <!-- Achievements Section -->
   <% if (data.achievements.length) { %>
   <div class="section">
     <h2>Achievements</h2>
     <ul>
       <% data.achievements.forEach(a => { %>
-        <li class="highlight"><%- a %></li>
+        <li><%- a %></li>
       <% }) %>
     </ul>
   </div>

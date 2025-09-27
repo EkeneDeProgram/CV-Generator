@@ -1,9 +1,10 @@
 import { CVData } from "../models/cvTypes";
 
-const keywords = ["JavaScript", "React", "Node.js", "Python", "Leadership"]; // Example
+// Default keywords (languages, frameworks, soft skills, etc.)
+const defaultKeywords = ["JavaScript", "React", "Node.js", "Python", "Leadership"];
 
 // Highlight keywords for HTML
-const highlightHTML = (text: string): string => {
+const highlightHTML = (text: string, keywords: string[]): string => {
     keywords.forEach(kw => {
         const regex = new RegExp(`\\b(${kw})\\b`, "gi");
         text = text.replace(regex, `<span class="highlight">$1</span>`);
@@ -12,7 +13,7 @@ const highlightHTML = (text: string): string => {
 };
 
 // Mark keywords for DOCX
-const markKeywordsForDocx = (text: string): { parts: (string | { text: string; bold: boolean })[] } => {
+const markKeywordsForDocx = (text: string, keywords: string[]): { parts: (string | { text: string; bold: boolean })[] } => {
     let parts: (string | { text: string; bold: boolean })[] = [];
     let lastIndex = 0;
     const regex = new RegExp(`\\b(${keywords.join("|")})\\b`, "gi");
@@ -30,34 +31,61 @@ const markKeywordsForDocx = (text: string): { parts: (string | { text: string; b
     return { parts };
 };
 
-export const aiFormatCV = (data: CVData) => {
+// Helpers to handle string | string[]
+const highlightAny = (input: string | string[], keywords: string[]): string | string[] => {
+    if (Array.isArray(input)) {
+        return input.map(i => highlightHTML(i, keywords));
+    }
+    return highlightHTML(input, keywords);
+};
+
+const markAnyForDocx = (input: string | string[], keywords: string[]): { parts: (string | { text: string; bold: boolean })[] }[] => {
+    if (Array.isArray(input)) {
+        return input.map(i => markKeywordsForDocx(i, keywords));
+    }
+    return [markKeywordsForDocx(input, keywords)];
+};
+
+// Main CV formatting function
+export const aiFormatCV = (data: CVData, userKeywords: string[] = []) => {
+    // Merge default + user-provided keywords (remove duplicates)
+    const keywords = Array.from(new Set([...defaultKeywords, ...userKeywords]));
+
+    // Highlight in summary
+    if (data.summary) {
+        data.summary = highlightHTML(data.summary, keywords);
+    }
+
+    // Normalize name and skills
     data.personalInfo.name = data.personalInfo.name.toUpperCase();
     data.skills = Array.from(new Set(data.skills)).sort();
 
-    // Highlight HTML
+    // Highlight in work experience
     data.workExperience.forEach(exp => {
-        exp.description = highlightHTML(exp.description);
-        exp.role = highlightHTML(exp.role);
+        exp.description = highlightAny(exp.description, keywords);
+        exp.role = highlightHTML(exp.role, keywords);
     });
 
+    // Highlight in projects
     data.projects.forEach(p => {
-        p.description = highlightHTML(p.description);
-        p.title = highlightHTML(p.title);
+        p.description = highlightAny(p.description, keywords);
+        p.title = highlightHTML(p.title, keywords);
     });
 
-    data.achievements = data.achievements.map(a => highlightHTML(a));
+    // Highlight in achievements
+    data.achievements = data.achievements.map(a => highlightHTML(a, keywords));
 
     // Add DOCX metadata
     (data as any)._docxParts = {
         workExperience: data.workExperience.map(exp => ({
-            role: markKeywordsForDocx(exp.role).parts,
-            description: markKeywordsForDocx(exp.description).parts
+            role: markKeywordsForDocx(exp.role, keywords).parts,
+            description: markAnyForDocx(exp.description, keywords).map(d => d.parts)
         })),
         projects: data.projects.map(p => ({
-            title: markKeywordsForDocx(p.title).parts,
-            description: markKeywordsForDocx(p.description).parts
+            title: markKeywordsForDocx(p.title, keywords).parts,
+            description: markAnyForDocx(p.description, keywords).map(d => d.parts)
         })),
-        achievements: data.achievements.map(a => markKeywordsForDocx(a).parts)
+        achievements: data.achievements.map(a => markKeywordsForDocx(a, keywords).parts)
     };
 
     return data;

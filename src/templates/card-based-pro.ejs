@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%- data.personalInfo.name %> - CV</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    :root {
+      --accent: #3498db;
+      --accent-light: #ecf4f9;
+      --highlight-bg: #ffeaa7;
+      --bg: #f5f6fa;
+      --card-radius: 10px;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      margin: 0;
+      padding: 20px;
+      color: #2c3e50;
+      line-height: 1.6;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1000px;
+      margin: auto;
+      gap: 30px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      flex: 1;
+      background: var(--accent-light);
+      padding: 25px;
+      border-radius: var(--card-radius);
+      min-width: 250px;
+    }
+
+    .sidebar h1 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .sidebar p, .sidebar a {
+      margin-bottom: 8px;
+      display: block;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .skill-badge {
+      display: inline-block;
+      background-color: var(--accent);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin: 4px 4px 0 0;
+      font-size: 0.85em;
+    }
+
+    /* Main content */
+    .main {
+      flex: 2;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      color: var(--accent);
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 5px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 16px 20px;
+      border-radius: var(--card-radius);
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover { transform: translateY(-2px); }
+
+    .highlight {
+      background-color: var(--highlight-bg);
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      .sidebar, .main { width: 100%; }
+      .sidebar { margin-bottom: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h1><%- data.personalInfo.name %></h1>
+      <p>Email: <%- data.personalInfo.email %></p>
+      <p>Contact: <%- data.personalInfo.contact %></p>
+      <% if(data.personalInfo.linkedin){ %>
+        <p><a href="<%- data.personalInfo.linkedin %>">LinkedIn</a></p>
+      <% } %>
+      <% if(data.personalInfo.github){ %>
+        <p><a href="<%- data.personalInfo.github %>">GitHub</a></p>
+      <% } %>
+      <% if(data.skills.length){ %>
+        <h2>Skills</h2>
+        <% data.skills.forEach(group => { %>
+          <p><strong><%- group.category %>:</strong></p>
+          <% group.items.forEach(skill => { %>
+            <span class="skill-badge"><%- skill %></span>
+          <% }) %>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <% if(data.summary){ %>
+      <div class="card">
+        <h2>Professional Summary</h2>
+        <p><%- data.summary %></p>
+      </div>
+      <% } %>
+
+      <% if(data.workExperience.length){ %>
+        <h2>Work Experience</h2>
+        <% data.workExperience.forEach(exp => { %>
+          <div class="card">
+            <p><strong><%- exp.role %></strong> at <%- exp.company %></p>
+            <p><em><%- exp.startDate %> - <%- exp.endDate || 'Present' %></em></p>
+
+            <% if (Array.isArray(exp.description)) { %>
+              <ul>
+                <% exp.description.forEach(point => { %>
+                  <li><%- point %></li>
+                <% }) %>
+              </ul>
+            <% } else { %>
+              <p><%- exp.description %></p>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
+
+      <% if(data.projects.length){ %>
+        <h2>Projects</h2>
+        <% data.projects.forEach(project => { %>
+          <div class="card">
+            <p><strong><%- project.title %></strong></p>
+
+            <% if (Array.isArray(project.description)) { %>
+              <ul>
+                <% project.description.forEach(point => { %>
+                  <li><%- point %></li>
+                <% }) %>
+              </ul>
+            <% } else { %>
+              <p><%- project.description %></p>
+            <% } %>
+
+            <% if(project.link){ %>
+              <p><a href="<%- project.link %>"><%- project.link %></a></p>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
+
+
+      <% if(data.education.length){ %>
+        <h2>Education</h2>
+        <% data.education.forEach(edu => { %>
+          <div class="card">
+            <p><strong><%- edu.degree %></strong> at <%- edu.institution %></p>
+            <p><em><%- edu.startDate %> - <%- edu.endDate || 'Present' %></em></p>
+          </div>
+        <% }) %>
+      <% } %>
+
+      <% if(data.achievements.length){ %>
+        <h2>Achievements</h2>
+        <% data.achievements.forEach(a => { %>
+          <div class="card">
+            <p class="highlight"><%- a %></p>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+  </div>
+</body>
+</html>
