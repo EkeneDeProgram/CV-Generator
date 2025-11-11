@@ -64,7 +64,7 @@ cv-generator/
 
     or with nodemon (if configured):
     ```bash
-    npm run dev
+    npx ts-node-dev src/server.ts
     ```
 
 📑 API Endpoints
@@ -152,7 +152,7 @@ POST /cv/preview
 📘 Documentation
 
 API documentation is available via Swagger UI:
-👉 http://localhost:5000/api-docs
+👉 http://localhost:5000/api/docs
 
 
 🏗 Future Improvements
