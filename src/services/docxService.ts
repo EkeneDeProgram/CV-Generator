@@ -2,7 +2,7 @@ import { CVData } from "../models/cvTypes";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 
 
-// 🛠 Helper to safely clean text and detect highlights
+// Helper to safely clean text and detect highlights
 function createTextRun(
     input: string | { text?: string; bold?: boolean } | null | undefined,
     appendComma = false
@@ -28,13 +28,13 @@ function createTextRun(
             }
             bold = input.bold || false;
         } else {
-            // ⚠️ Unexpected object without text
-            console.warn("⚠️ Unexpected input in createTextRun:", input);
+            // Unexpected object without text
+            console.warn("Unexpected input in createTextRun:", input);
             rawText = String(input);
         }
     } else {
-        // ⚠️ Catch-all for weird cases (numbers, booleans, etc.)
-        console.warn("⚠️ Invalid input type in createTextRun:", input);
+        // Catch-all for weird cases (numbers, booleans, etc.)
+        console.warn("Invalid input type in createTextRun:", input);
         rawText = String(input);
     }
 
@@ -55,7 +55,7 @@ export const generateDOCX = async (data: CVData): Promise<Buffer> => {
                     new Paragraph({ text: `Email: ${data.personalInfo.email}` }),
                     new Paragraph({ text: `Contact: ${data.personalInfo.contact}` }),
 
-                    // ✅ Professional Summary
+                    // Professional Summary
                     ...(data._docxParts.summary && data._docxParts.summary.length
                         ? [
                               new Paragraph({
@@ -70,7 +70,7 @@ export const generateDOCX = async (data: CVData): Promise<Buffer> => {
                           ]
                         : []),
 
-                    // ✅ Skills
+                    // Skills
                     ...(data.skills && data.skills.length
                         ? [
                               new Paragraph({
@@ -84,7 +84,7 @@ export const generateDOCX = async (data: CVData): Promise<Buffer> => {
                           ]
                         : []),
 
-                    // ✅ Work Experience
+                    // Work Experience
                     ...(data._docxParts.workExperience &&
                     data._docxParts.workExperience.length
                         ? [
@@ -106,7 +106,7 @@ export const generateDOCX = async (data: CVData): Promise<Buffer> => {
                           ]
                         : []),
 
-                    // ✅ Projects
+                    // Projects
                     ...(data._docxParts.projects && data._docxParts.projects.length
                         ? [
                               new Paragraph({
@@ -127,7 +127,7 @@ export const generateDOCX = async (data: CVData): Promise<Buffer> => {
                           ]
                         : []),
 
-                    // ✅ Achievements
+                    // Achievements
                     ...(data._docxParts.achievements &&
                     data._docxParts.achievements.length
                         ? [

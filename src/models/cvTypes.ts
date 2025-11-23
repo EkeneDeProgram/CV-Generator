@@ -56,9 +56,9 @@ export interface CVData {
     workExperience: WorkExperience[]; 
     education: Education[]; 
     projects: Project[];
-    skills: Skill[];                 // ✅ Added skills here
+    skills: Skill[];                 
     achievements: string[];
-    template: "classic" | "modern" | "creative" | "card-based" | "two-column" | "two-column-pro" | "modern-pro" | "card-based-pro"; 
+    template: "twoColumn-pro" | "modern" | "card"; 
     colorScheme: string;          
     fontStyle: string;  
     _docxParts?: DocxParts;

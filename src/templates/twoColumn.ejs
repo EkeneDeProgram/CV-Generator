@@ -1,3 +1,38 @@
+<!--
+  Two Column CV Template (EJS)
+  --------------------------------------------------------------------
+  This EJS template renders a "two-column" CV layout used for:
+    - Live HTML preview in the frontend
+    - PDF generation via Puppeteer
+    - DOCX export via the backend service
+
+  Data Source:
+    The `data` object passed to this template conforms to the CVData
+    TypeScript interface and includes:
+      • personalInfo      - Candidate profile + contact details
+      • summary           - Professional summary section
+      • workExperience    - Work history with text or bullet points
+      • projects          - Project portfolio entries
+      • education         - Academic background
+      • skills            - Categorized list of skills
+      • achievements      - Key achievements or awards
+
+  Layout Responsibilities:
+    - Present the CV in a clean, two-column card-based structure
+    - Keep styling lightweight and PDF-friendly for consistent rendering
+    - Ensure responsive design for browser preview
+    - Render user input safely using EJS escaping (<%- %>)
+
+  Notes for Developers:
+    - Avoid inserting inline scripts; this template is optimized
+      primarily for server-side rendering and PDF generation.
+    - Maintain flexible layout elements (no absolute positioning)
+      to prevent PDF shift issues when Puppeteer renders.
+    - All editable styling should remain inside the <style> block
+      to support isolated template theming.
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +47,7 @@
       --bg: #f9fbfc;
       --card: #ffffff;
       --highlight-bg: #ffeaa7;
+      --card-radius: 10px;
     }
 
     body {
@@ -31,22 +67,22 @@
     /* Header */
     header {
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
       background: var(--card);
-      padding: 20px 24px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 24px 28px;
+      border-radius: var(--card-radius);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
     header h1 {
       margin: 0;
-      font-size: 34px;
+      font-size: 36px;
       color: var(--accent);
       letter-spacing: 0.5px;
     }
 
     header .meta {
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 14px;
       color: var(--muted);
     }
@@ -55,16 +91,14 @@
       color: var(--accent);
       font-weight: 500;
       text-decoration: none;
+      margin: 0 4px;
     }
-
-    header .meta a:hover {
-      text-decoration: underline;
-    }
+    header .meta a:hover { text-decoration: underline; }
 
     /* Columns */
     .columns {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 24px;
     }
 
@@ -73,22 +107,23 @@
       margin-bottom: 24px;
       background: var(--card);
       border-left: 4px solid var(--accent);
-      border-radius: 8px;
-      padding: 16px 18px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
+      border-radius: var(--card-radius);
+      padding: 18px 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     section:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     section h2 {
       margin-top: 0;
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 22px;
+      font-weight: 700;
       color: var(--accent);
-      border-bottom: 2px solid #eaeaea;
+      border-bottom: 2px solid #e0e0e0;
       padding-bottom: 6px;
     }
 
@@ -105,29 +140,35 @@
     .entry .meta {
       font-size: 13px;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .highlight {
       background-color: var(--highlight-bg);
       font-weight: 700;
-      padding: 2px 4px;
-      border-radius: 3px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      display: inline-block;
     }
 
-    /* Skills as badges */
+    /* Skills badges */
     .skill-badge {
       display: inline-block;
       background: var(--accent-light);
       color: var(--accent);
       font-size: 13px;
-      padding: 4px 10px;
+      padding: 5px 10px;
       margin: 4px 4px 0 0;
       border-radius: 20px;
       font-weight: 500;
+      transition: background 0.2s ease;
+    }
+    .skill-badge:hover {
+      background: var(--accent);
+      color: #fff;
     }
 
-    /* Projects link styling */
+    /* Project links */
     .project-link {
       color: var(--accent);
       font-size: 13px;
@@ -141,7 +182,7 @@
       margin: 8px 0;
       list-style: none;
       position: relative;
-      padding-left: 18px;
+      padding-left: 20px;
     }
     ul li::before {
       content: "✓";
@@ -153,12 +194,8 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .columns {
-        grid-template-columns: 1fr;
-      }
-      section {
-        padding: 14px 16px;
-      }
+      .columns { grid-template-columns: 1fr; }
+      section { padding: 14px 16px; }
     }
   </style>
 </head>
@@ -172,10 +209,11 @@
         <span><%- data.personalInfo.contact %></span>
         <% if (data.personalInfo.linkedin) { %> · <a href="<%- data.personalInfo.linkedin %>">LinkedIn</a><% } %>
         <% if (data.personalInfo.github) { %> · <a href="<%- data.personalInfo.github %>">GitHub</a><% } %>
+        <% if (data.personalInfo.portfolio) { %> · <a href="<%- data.personalInfo.portfolio %>">Portfolio</a><% } %>
       </div>
     </header>
 
-    <!-- Two Columns -->
+    <!-- Columns -->
     <div class="columns">
       <!-- Left Column -->
       <div>
@@ -193,7 +231,6 @@
               <div class="entry">
                 <div class="title"><%- exp.role %> — <%- exp.company %></div>
                 <div class="meta"><%- exp.startDate %> - <%- exp.endDate || 'Present' %></div>
-
                 <% if (Array.isArray(exp.description)) { %>
                   <ul>
                     <% exp.description.forEach(function(point){ %>
@@ -238,7 +275,6 @@
                     <a href="<%- p.link %>" class="project-link"><%- p.link %></a>
                   <% } %>
                 </div>
-
                 <% if (Array.isArray(p.description)) { %>
                   <ul>
                     <% p.description.forEach(function(point){ %>

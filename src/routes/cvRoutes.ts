@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { generateCV, previewCV, downloadPDF, downloadDOCX } from "../controllers/cvController";
+import { requestLogger } from "../middleware/requestLogger";
 
 const router = Router();
+
+// Attach request logger middleware to all CV routes
+router.use(requestLogger);
 
 /**
  * @swagger

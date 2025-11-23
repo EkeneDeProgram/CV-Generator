@@ -1,3 +1,39 @@
+
+<!--
+  CV Template: Card Layout (EJS)
+  --------------------------------------------------------------------
+  This EJS template renders the "card" CV design used for:
+    - Live HTML preview in the frontend
+    - PDF generation via Puppeteer
+    - DOCX export via the backend service
+
+  Data Source:
+    The `data` object passed to this template conforms to the CVData
+    TypeScript interface and includes:
+      • personalInfo      - Candidate profile + contact details
+      • summary           - Professional summary section
+      • workExperience    - Work history with text or bullet points
+      • projects          - Project portfolio entries
+      • education         - Academic background
+      • skills            - Categorized list of skills
+      • achievements      - Key achievements or awards
+
+  Layout Responsibilities:
+    - Present the CV in a clean, card-based UI structure
+    - Keep styling lightweight and PDF-friendly for consistent rendering
+    - Ensure responsive design for browser preview
+    - Render user input safely using EJS escaping (<%- %>)
+
+  Notes for Developers:
+    - Avoid inserting inline scripts; this template is optimized
+      primarily for server-side rendering and PDF generation.
+    - Maintain flexible layout elements (no absolute positioning)
+      to prevent PDF shift issues when Puppeteer renders.
+    - All editable styling should remain inside the <style> block
+      to support isolated template theming.
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +42,22 @@
   <link rel="stylesheet" href="/css/styles.css">
   <style>
     :root {
-      --accent: #3498db;
-      --accent-light: #ecf4f9;
+      --accent: #2c3e50;
+      --accent-light: #ecf4fa;
       --highlight-bg: #ffeaa7;
-      --bg: #f5f6fa;
-      --card-radius: 10px;
+      --bg: #f9fbfc;
+      --card-radius: 12px;
+      --text-color: #2c3e50;
+      --muted-color: #7f8c8d;
     }
 
+    /* Base */
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
       background-color: var(--bg);
       margin: 0;
       padding: 20px;
-      color: #2c3e50;
+      color: var(--text-color);
       line-height: 1.6;
     }
 
@@ -27,6 +66,7 @@
       max-width: 1000px;
       margin: auto;
       gap: 30px;
+      flex-wrap: wrap;
     }
 
     /* Sidebar */
@@ -39,8 +79,9 @@
     }
 
     .sidebar h1 {
-      font-size: 1.8em;
-      margin-bottom: 10px;
+      font-size: 2em;
+      font-weight: 700;
+      margin-bottom: 15px;
       color: var(--accent);
       text-align: center;
     }
@@ -50,7 +91,11 @@
       display: block;
       word-break: break-word;
       overflow-wrap: anywhere;
+      color: var(--text-color);
     }
+
+    .sidebar a { color: var(--accent); text-decoration: none; }
+    .sidebar a:hover { text-decoration: underline; }
 
     .skill-badge {
       display: inline-block;
@@ -62,13 +107,15 @@
       font-size: 0.85em;
     }
 
-    /* Main content */
+    /* Main Content */
     .main {
       flex: 2;
+      min-width: 600px;
     }
 
     h2 {
-      font-size: 1.5em;
+      font-size: 1.6em;
+      font-weight: 600;
       margin-bottom: 15px;
       color: var(--accent);
       border-bottom: 2px solid #e0e0e0;
@@ -77,20 +124,34 @@
 
     .card {
       background: #fff;
-      padding: 16px 20px;
+      padding: 20px;
       border-radius: var(--card-radius);
-      margin-bottom: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .card:hover { transform: translateY(-2px); }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
 
     .highlight {
       background-color: var(--highlight-bg);
-      font-weight: bold;
-      padding: 2px 6px;
+      font-weight: 600;
+      padding: 3px 6px;
       border-radius: 4px;
+      display: inline-block;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+      line-height: 1.5;
     }
 
     a { color: var(--accent); text-decoration: none; }
@@ -98,8 +159,12 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .container { flex-direction: column; }
-      .sidebar, .main { width: 100%; }
+      .container {
+        flex-direction: column;
+      }
+      .sidebar, .main {
+        width: 100%;
+      }
       .sidebar { margin-bottom: 20px; }
     }
   </style>
@@ -110,7 +175,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <h1><%- data.personalInfo.name %></h1>
-      <p>Email: <%- data.personalInfo.email %></p>
+      <p>Email: <a href="mailto:<%- data.personalInfo.email %>"><%- data.personalInfo.email %></a></p>
       <p>Contact: <%- data.personalInfo.contact %></p>
       <% if(data.personalInfo.linkedin){ %>
         <p><a href="<%- data.personalInfo.linkedin %>">LinkedIn</a></p>
@@ -118,6 +183,10 @@
       <% if(data.personalInfo.github){ %>
         <p><a href="<%- data.personalInfo.github %>">GitHub</a></p>
       <% } %>
+      <% if(data.personalInfo.portfolio){ %>
+        <p><a href="<%- data.personalInfo.portfolio %>">Portfolio</a></p>
+      <% } %>
+
       <% if(data.skills.length){ %>
         <h2>Skills</h2>
         <% data.skills.forEach(group => { %>
@@ -132,10 +201,10 @@
     <!-- Main Content -->
     <div class="main">
       <% if(data.summary){ %>
-      <div class="card">
-        <h2>Professional Summary</h2>
-        <p><%- data.summary %></p>
-      </div>
+        <div class="card">
+          <h2>Professional Summary</h2>
+          <p><%- data.summary %></p>
+        </div>
       <% } %>
 
       <% if(data.workExperience.length){ %>
@@ -180,7 +249,6 @@
           </div>
         <% }) %>
       <% } %>
-
 
       <% if(data.education.length){ %>
         <h2>Education</h2>

@@ -1,11 +1,18 @@
-// Import the configured Express app (with middleware, routes, etc.)
+/**
+ * Entry Point: Server Bootstrap File
+ * -----------------------------------
+ * - Imports the fully configured Express application
+ * - Determines the server port (environment variable or default)
+ * - Starts the HTTP server and listens for incoming requests
+ * - Logs the startup status to the console
+ */
+
 import app from "./app";
 
-// Define the port: use environment variable if available, otherwise default to 5000
 const PORT = process.env.PORT || 5000;
 
-// Start the server and listen on the chosen port
+// Start Express server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
 

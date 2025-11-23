@@ -1,0 +1,56 @@
+[INFO] 2025-11-23T10:55:02.987Z - CV PDF generated successfully.
+[INFO] 2025-11-23T10:56:04.429Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:08:31.513Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:08:31.545Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:08:34.016Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:09:35.072Z - GET /api/docs/ | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:09:35.107Z - GET /api/docs/swagger-ui.css | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:09:35.110Z - GET /api/docs/swagger-ui-bundle.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:09:35.114Z - GET /api/docs/swagger-ui-standalone-preset.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:09:35.115Z - GET /api/docs/swagger-ui-init.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:09:35.257Z - GET /api/docs/favicon-32x32.png | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:10:05.973Z - GET /api/docs/ | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:10:05.998Z - GET /api/docs/swagger-ui.css | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:10:06.007Z - GET /api/docs/swagger-ui-bundle.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:10:06.010Z - GET /api/docs/swagger-ui-standalone-preset.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:10:06.012Z - GET /api/docs/swagger-ui-init.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:10:06.128Z - GET /api/docs/favicon-32x32.png | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:12:20.307Z - GET /api/docs/ | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:12:20.348Z - GET /api/docs/swagger-ui.css | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:12:20.354Z - GET /api/docs/swagger-ui-bundle.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:12:20.357Z - GET /api/docs/swagger-ui-standalone-preset.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:12:20.359Z - GET /api/docs/swagger-ui-init.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:12:20.477Z - GET /api/docs/favicon-32x32.png | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[Rc[REQUEST] 2025-11-23T11:23:59.795Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:23:59.827Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[ERROR] 2025-11-23T11:23:59.832Z - Generate PDF failed: ENOENT: no such file or directory, open 'C:\Users\User\Documents\cv-generator\src\templates\modern-pro.ejs'
+[REQUEST] 2025-11-23T11:24:01.070Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:24:01.074Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[ERROR] 2025-11-23T11:24:01.076Z - Generate PDF failed: ENOENT: no such file or directory, open 'C:\Users\User\Documents\cv-generator\src\templates\modern-pro.ejs'
+[REQUEST] 2025-11-23T11:25:00.138Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:25:00.140Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:25:02.509Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:25:52.420Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:25:52.443Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:25:54.755Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:46:17.917Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:46:17.949Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:46:20.004Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:53:00.584Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:53:00.587Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:53:02.787Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:56:10.962Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:56:10.964Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:56:13.127Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:58:23.216Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:58:23.218Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T11:58:25.392Z - CV PDF generated successfully.
+[REQUEST] 2025-11-23T11:59:31.147Z - GET /api/docs/ | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:59:31.186Z - GET /api/docs/swagger-ui.css | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:59:31.189Z - GET /api/docs/swagger-ui-bundle.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:59:31.192Z - GET /api/docs/swagger-ui-standalone-preset.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:59:31.194Z - GET /api/docs/swagger-ui-init.js | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T11:59:31.341Z - GET /api/docs/favicon-32x32.png | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T12:00:15.416Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[REQUEST] 2025-11-23T12:00:15.444Z - POST /api/cv/download/pdf | IP: ::1 | Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+[INFO] 2025-11-23T12:00:17.726Z - CV PDF generated successfully.

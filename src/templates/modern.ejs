@@ -1,42 +1,129 @@
-<!DOCTYPE html> 
+<!--
+  Modern CV Template: Card Layout (EJS)
+  --------------------------------------------------------------------
+  This EJS template renders the "modern" CV design used for:
+    - Live HTML preview in the frontend
+    - PDF generation via Puppeteer
+    - DOCX export via the backend service
+
+  Data Source:
+    The `data` object passed to this template conforms to the CVData
+    TypeScript interface and includes:
+      • personalInfo      - Candidate profile + contact details
+      • summary           - Professional summary section
+      • workExperience    - Work history with text or bullet points
+      • projects          - Project portfolio entries
+      • education         - Academic background
+      • skills            - Categorized list of skills
+      • achievements      - Key achievements or awards
+
+  Layout Responsibilities:
+    - Present the CV in a clean, card-based UI structure
+    - Keep styling lightweight and PDF-friendly for consistent rendering
+    - Ensure responsive design for browser preview
+    - Render user input safely using EJS escaping (<%- %>)
+
+  Notes for Developers:
+    - Avoid inserting inline scripts; this template is optimized
+      primarily for server-side rendering and PDF generation.
+    - Maintain flexible layout elements (no absolute positioning)
+      to prevent PDF shift issues when Puppeteer renders.
+    - All editable styling should remain inside the <style> block
+      to support isolated template theming.
+-->
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title><%- data.personalInfo.name %> - CV</title>
   <link rel="stylesheet" href="/css/styles.css">
+
   <style>
+    :root {
+      --accent: #2c3e50;
+      --accent-light: #ecf4fa;
+      --muted: #7f8c8d;
+      --bg: #f5f6fa;
+      --card: #ffffff;
+
+      /* UPDATED: softer highlight color */
+      --highlight-bg: #fff4d6;
+
+      --border-radius: 12px;
+    }
+
     body {
-      background-color: #f5f6fa;
       margin: 0;
       padding: 20px;
-      font-family: 'Helvetica Neue', sans-serif;
-      color: #333333;
+      font-family: 'Inter', 'Segoe UI', Helvetica, sans-serif;
+      background-color: var(--bg);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* ==========================
+        CENTERED HEADER
+    ========================== */
+    .header {
+      text-align: center;
+      padding: 20px 30px 10px 30px;
+      background: var(--card);
+      border-radius: var(--border-radius);
+      margin: 0 auto 20px auto;
+      max-width: 1000px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .header h1 {
+      font-size: 2.2em;
+      color: var(--accent);
+      margin: 0 0 10px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .header .contact-line {
+      font-size: 0.95em;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .contact-line a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-line span {
+      margin: 0 6px;
+      color: #bfbfbf;
     }
 
     .container {
       display: flex;
       max-width: 1000px;
       margin: 0 auto;
-      background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      background: var(--card);
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
       overflow: hidden;
     }
 
     .sidebar {
       width: 30%;
-      background-color: #f0f4f8;
+      background-color: var(--accent-light);
       padding: 30px;
       box-sizing: border-box;
       border-right: 1px solid #ddd;
     }
 
-    /* Wrap text properly */
     .sidebar p,
     .sidebar a {
       word-break: break-word;
-      overflow-wrap: break-word;
-      display: inline-block;
+      overflow-wrap: anywhere;
+      display: block;
+      margin-bottom: 8px;
     }
 
     .main {
@@ -45,20 +132,20 @@
       box-sizing: border-box;
     }
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 5px;
-    }
-
     h2 {
-      font-size: 1.4em;
-      color: #3498db;
+      font-size: 1.5em;
+      color: var(--accent);
       margin-top: 20px;
       margin-bottom: 10px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 3px;
+      border-bottom: 2px solid #eaeaea;
+      padding-bottom: 4px;
+    }
+
+    h3 {
+      color: var(--accent);
+      margin-bottom: 3px;
+      font-size: 1.1em;
+      font-weight: 600;
     }
 
     p, li {
@@ -67,27 +154,78 @@
 
     ul {
       padding-left: 20px;
-    }
-
-    .section {
-      margin-bottom: 25px;
-    }
-
-    .highlight {
-      background-color: #ffeaa7;
-      font-weight: bold;
+      margin: 5px 0;
     }
 
     a {
-      color: #3498db;
+      color: var(--accent);
       text-decoration: none;
+      font-weight: 500;
     }
 
     a:hover {
       text-decoration: underline;
     }
 
-    /* Responsive for smaller screens */
+    .section {
+      margin-bottom: 25px;
+    }
+
+    /* UPDATED: softer highlight */
+    .highlight {
+      background-color: var(--highlight-bg);
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .skill-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      padding: 4px 10px;
+      margin: 4px 4px 0 0;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .entry-card {
+      background: #fdfdfd;
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .entry-card .title {
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .entry-card .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+
+    ul li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -96,60 +234,71 @@
         width: 100%;
         border-right: none;
       }
+      .header h1 {
+        font-size: 1.8em;
+      }
+      h2 {
+        font-size: 1.3em;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    
-    <!-- Sidebar: Personal Info + Skills -->
-    <div class="sidebar">
-      <!-- Personal Info -->
-      <div class="section">
-        <h1><%- data.personalInfo.name %></h1>
-        <p>Email: <%- data.personalInfo.email %></p>
-        <p>Contact: <%- data.personalInfo.contact %></p>
-        <p>Address: <%- data.personalInfo.address %></p>
-        <% if (data.personalInfo.linkedin) { %>
-          <p>LinkedIn: <a href="<%- data.personalInfo.linkedin %>"><%- data.personalInfo.linkedin %></a></p>
-        <% } %>
-        <% if (data.personalInfo.github) { %>
-          <p>GitHub: <a href="<%- data.personalInfo.github %>"><%- data.personalInfo.github %></a></p>
-        <% } %>
-        <% if (data.personalInfo.portfolio) { %>
-          <p>Portfolio: <a href="<%- data.personalInfo.portfolio %>"><%- data.personalInfo.portfolio %></a></p>
-        <% } %>
-        <% if (data.personalInfo.socialLinks && data.personalInfo.socialLinks.length) { %>
-          <p>Social Links:</p>
-          <ul>
-            <% data.personalInfo.socialLinks.forEach(link => { %>
-              <li><a href="<%- link %>"><%- link %></a></li>
-            <% }) %>
-          </ul>
-        <% } %>
-      </div>
 
-      <!-- Skills -->
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1><%- data.personalInfo.name %></h1>
+
+    <div class="contact-line">
+      <a href="mailto:<%- data.personalInfo.email %>"><%- data.personalInfo.email %></a>
+      <span>•</span>
+      <span><%- data.personalInfo.contact %></span>
+
+      <% if (data.personalInfo.linkedin) { %>
+        <span>•</span>
+        <a href="<%- data.personalInfo.linkedin %>">LinkedIn</a>
+      <% } %>
+
+      <% if (data.personalInfo.github) { %>
+        <span>•</span>
+        <a href="<%- data.personalInfo.github %>">GitHub</a>
+      <% } %>
+
+
+      <% if (data.personalInfo.portfolio) { %>
+        <span>•</span>
+        <a href="<%- data.personalInfo.portfolio %>">Portfolio</a>
+      <% } %>
+
+      <% if (data.personalInfo.address) { %>
+        <span>•</span>
+        <span><%- data.personalInfo.address %></span>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
       <% if (data.skills.length) { %>
-      <div class="section">
-        <h2>Skills</h2>
-        <% data.skills.forEach(skillGroup => { %>
-          <p><strong><%- skillGroup.category %>:</strong></p>
-          <ul>
+        <div class="section">
+          <h2>Skills</h2>
+          <% data.skills.forEach(skillGroup => { %>
+            <p><strong><%- skillGroup.category %>:</strong></p>
             <% skillGroup.items.forEach(item => { %>
-              <li class="highlight"><%- item %></li>
+              <span class="skill-badge"><%- item %></span>
             <% }) %>
-          </ul>
-        <% }) %>
-      </div>
+          <% }) %>
+        </div>
       <% } %>
     </div>
 
-
-    <!-- Main: Summary + Work Experience + Projects + Education + Achievements -->
+    <!-- Main -->
     <div class="main">
 
-      <!-- ✅ Professional Summary Section -->
       <% if (data.summary) { %>
       <div class="section">
         <h2>Professional Summary</h2>
@@ -157,55 +306,70 @@
       </div>
       <% } %>
 
-      <!-- Work Experience -->
-      <% if (data.workExperience.length) { %>
-      <div class="section">
-        <h2>Work Experience</h2>
-        <% data.workExperience.forEach(exp => { %>
-          <p><strong><%- exp.role %> at <%- exp.company %></strong> (<%- exp.startDate %> - <%- exp.endDate || "Present" %>)</p>
-          <p><%- exp.description %></p>
-        <% }) %>
-      </div>
-      <% } %>
+      <% data.workExperience.forEach(exp => { %>
+        <div class="section">
+          <h3><%- exp.role %> @ <%- exp.company %></h3>
+          <p><%- exp.startDate %> - <%- exp.endDate %></p>
 
-      <!-- Projects -->
-      <% if (data.projects.length) { %>
-      <div class="section">
-        <h2>Projects</h2>
-        <% data.projects.forEach(project => { %>
-          <p><strong><%- project.title %></strong></p>
-          <p><%- project.description %></p>
-          <% if (project.link) { %>
-            <p>Link: <a href="<%- project.link %>"><%- project.link %></a></p>
+          <% if (Array.isArray(exp.description)) { %>
+            <ul>
+              <% exp.description.forEach(point => { %>
+                <li><%- point %></li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p><%- exp.description %></p>
           <% } %>
-        <% }) %>
-      </div>
+        </div>
+      <% }) %>
+
+      <% if (data.projects.length) { %>
+        <div class="section">
+          <h2>Projects</h2>
+        </div>
       <% } %>
 
-      <!-- Education -->
+      <% data.projects.forEach(p => { %>
+        <div class="section">
+          <h3><%- p.title %></h3>
+          <% if (Array.isArray(p.description)) { %>
+            <ul>
+              <% p.description.forEach(point => { %>
+                <li><%- point %></li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p><%- p.description %></p>
+          <% } %>
+        </div>
+      <% }) %>
+
       <% if (data.education.length) { %>
       <div class="section">
         <h2>Education</h2>
         <% data.education.forEach(edu => { %>
-          <p><strong><%- edu.degree %></strong></p>
-          <p><%- edu.institution %> (<%- edu.startDate %> - <%- edu.endDate || "Present" %>)</p>
+          <div class="entry-card">
+            <div class="title"><%- edu.degree %></div>
+            <div class="meta"><%- edu.institution %> (<%- edu.startDate %> - <%- edu.endDate || "Present" %>)</div>
+          </div>
         <% }) %>
       </div>
       <% } %>
 
-      <!-- Achievements -->
       <% if (data.achievements.length) { %>
       <div class="section">
         <h2>Achievements</h2>
         <ul>
           <% data.achievements.forEach(a => { %>
-            <li class="highlight"><%- a %></li>
+            <li><%- a %></li>   <!-- highlight removed here -->
           <% }) %>
         </ul>
       </div>
       <% } %>
+
     </div>
-    
   </div>
+
 </body>
 </html>
+
