@@ -85,21 +85,11 @@ Base URL: http://localhost:5000
 
 Available templates:
 
-- classic
-
 - modern
 
-- creative
+- card
 
-- card-based
-
-- two-column
-
-- modern-pro
-
-- card-based-pro
-
-- two-column-pro
+- twoColumn
 
 Each template uses EJS + CSS and can be extended/customized inside src/templates/.
 

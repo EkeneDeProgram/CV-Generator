@@ -32,3 +32,11 @@ yarn-error.log*
 # Ignore logs
 src/logs/
 
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+.dockerignore
+**/Dockerfile
+**/docker-compose*.yml

@@ -58,7 +58,7 @@ export interface CVData {
     projects: Project[];
     skills: Skill[];                 
     achievements: string[];
-    template: "twoColumn-pro" | "modern" | "card"; 
+    template: "twoColumn" | "modern" | "card"; 
     colorScheme: string;          
     fontStyle: string;  
     _docxParts?: DocxParts;
