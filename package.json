@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "clean": "rimraf dist",
+    "copy-templates": "cpy \"src/templates/**/*\" dist/templates",
+    "build": "npm run clean && tsc && npm run copy-templates",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,8 +25,14 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/ejs": "^3.1.5",
+    "@types/minimatch": "^6.0.0",
+    "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "cpy-cli": "^3.1.1",
     "nodemon": "^3.1.10",
+    "rimraf": "^6.1.2",
     "typescript": "^5.9.3"
   }
 }
