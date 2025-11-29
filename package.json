@@ -8,7 +8,8 @@
     "copy-templates": "cpy \"src/templates/**/*\" dist/templates",
     "build": "npm run clean && tsc && npm run copy-templates",
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "postinstall": "puppeteer install --product=chrome"
   },
   "keywords": [],
   "author": "",
