@@ -20,23 +20,38 @@ export const generatePDF = async (data: CVData): Promise<Buffer> => {
     browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath, // Chrome provided by chrome-aws-lambda
+      executablePath: await chromium.executablePath, // chrome-aws-lambda Chromium
       headless: chromium.headless,
     });
   } else {
     // ---------- Local Development ----------
-    const localPuppeteer = require("puppeteer"); // regular Puppeteer
-    browser = await localPuppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+    // Use chrome-aws-lambda for consistency if you want
+    let localExecutablePath: string | undefined;
+
+    try {
+      // Attempt to detect locally installed Chrome
+      const puppeteerLocal = require("puppeteer"); // regular Puppeteer
+      const browserInstance = await puppeteerLocal.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      });
+      browser = browserInstance;
+    } catch (err) {
+      // Fallback to chrome-aws-lambda bundled Chromium
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless,
+      });
+    }
   }
 
   const page = await browser.newPage();
   await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
   const pdfBuffer = await page.pdf({
-    format: "a4", // lowercase for puppeteer
+    format: "a4",
     printBackground: true,
   });
 
