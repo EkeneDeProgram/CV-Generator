@@ -7,9 +7,9 @@
     "clean": "rimraf dist",
     "copy-templates": "cpy \"src/templates/**/*\" dist/templates",
     "build": "npm run clean && tsc && npm run copy-templates",
+    "postinstall": "npx playwright install --with-deps chromium",
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
-    "postinstall": "puppeteer install --product=chrome"
+    "dev": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +21,7 @@
     "dotenv": "^17.2.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "puppeteer": "^24.31.0",
+    "playwright": "^1.57.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },

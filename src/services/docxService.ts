@@ -1,139 +1,177 @@
 import { CVData, DocxParts } from "../models/cvTypes";
-import { Document, Packer, Paragraph, TextRun } from "docx";
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  AlignmentType,
+} from "docx";
 
+// Utility: convert any input to TextRun[]
+function toRuns(value: any, appendComma = false): TextRun[] {
+  if (value === null || value === undefined) return [new TextRun("")];
 
-// Safely cleans text and detects highlights.
-function createTextRun(
-    input: string | { text?: string; bold?: boolean } | null | undefined,
-    appendComma = false
-): TextRun {
-    let rawText = "";
-    let bold = false;
-    let highlight: "yellow" | undefined = undefined;
+  if (Array.isArray(value)) {
+    return value
+      .map((item, idx) => toRuns(item, appendComma && idx < value.length - 1))
+      .flat();
+  }
 
-    if (!input) return new TextRun("");
+  let text = "";
+  let bold = false;
+  let highlight: "yellow" | undefined;
 
-    if (typeof input === "string") {
-        rawText = input.replace(/<[^>]+>/g, "");
-        if (input.includes('<span class="highlight">')) highlight = "yellow";
-    } else if (typeof input === "object") {
-        if (typeof input.text === "string") {
-            rawText = input.text.replace(/<[^>]+>/g, "");
-            if (input.text.includes('<span class="highlight">')) highlight = "yellow";
-            bold = input.bold ?? false;
-        } else {
-            console.warn("Unexpected input in createTextRun:", input);
-            rawText = String(input);
-        }
+  // Handle object with text and bold
+  if (typeof value === "object") {
+    // Check for grouped skills
+    if ("category" in value && Array.isArray(value.items)) {
+      text = `${value.category}: ${value.items.join(", ")}`;
+      bold = true;
+    } else if ("text" in value) {
+      text = sanitize(value.text);
+      bold = Boolean(value.bold);
+      if (value.text.includes('<span class="highlight">')) highlight = "yellow";
     } else {
-        rawText = String(input);
+      // Fallback
+      text = sanitize(JSON.stringify(value));
     }
+  } else if (typeof value === "string") {
+    text = sanitize(value);
+    if (value.includes('<span class="highlight">')) highlight = "yellow";
+  } else {
+    text = sanitize(String(value));
+  }
 
-    return new TextRun({
-        text: rawText + (appendComma ? ", " : ""),
-        bold,
-        highlight,
-    });
+  return [
+    new TextRun({
+      text: text + (appendComma ? ", " : ""),
+      bold,
+      highlight,
+    }),
+  ];
 }
 
-/**
- * Generates a DOCX file buffer from CVData.
- */
+// Remove HTML tags
+function sanitize(str: string): string {
+  return str.replace(/<[^>]+>/g, "");
+}
+
+// Create section heading
+function sectionHeading(text: string): Paragraph {
+  return new Paragraph({ text, heading: "Heading2" });
+}
+
+// Create bullet list from array
+function bulletListFromArray(items: any[]): Paragraph[] {
+  return items.map((item) =>
+    new Paragraph({
+      children: toRuns(item),
+      bullet: { level: 0 },
+      spacing: { after: 200 },
+    })
+  );
+}
+
+// DOCX Generation
 export const generateDOCX = async (data: CVData): Promise<Buffer> => {
-    // ⭐ FIX: Ensure all arrays ALWAYS exist
-    const docxParts: DocxParts = {
-        summary: data._docxParts?.summary ?? [],
-        workExperience: data._docxParts?.workExperience ?? [],
-        projects: data._docxParts?.projects ?? [],
-        achievements: data._docxParts?.achievements ?? [],
-    };
+  const parts: DocxParts = {
+    summary: data._docxParts?.summary ?? [],
+    workExperience: data._docxParts?.workExperience ?? [],
+    projects: data._docxParts?.projects ?? [],
+    achievements: data._docxParts?.achievements ?? [],
+  };
 
-    const doc = new Document({
-        sections: [
-            {
-                children: [
-                    // Header Info
-                    new Paragraph({ text: data.personalInfo.name, heading: "Heading1" }),
-                    new Paragraph({ text: `Email: ${data.personalInfo.email}` }),
-                    new Paragraph({ text: `Contact: ${data.personalInfo.contact}` }),
+  const children: Paragraph[] = [];
 
-                    // Professional Summary
-                    ...(docxParts.summary.length > 0
-                        ? [
-                              new Paragraph({ text: "Professional Summary", heading: "Heading2" }),
-                              new Paragraph({
-                                  children: docxParts.summary.map((s) => createTextRun(s)),
-                              }),
-                          ]
-                        : []),
+  // PERSONAL INFO
+  children.push(
+    
+    // Name as Heading1
+    new Paragraph({ text: data.personalInfo.name, heading: "Heading1" }),
 
-                    // Skills
-                    ...(data.skills?.length
-                        ? [
-                              new Paragraph({
-                                  children: [
-                                      new TextRun({ text: "Skills: ", bold: true }),
-                                      ...data.skills.map((skill: any, i: number) =>
-                                          createTextRun(skill, i < data.skills.length - 1)
-                                      ),
-                                  ],
-                              }),
-                          ]
-                        : []),
+    // Contact info block
+    new Paragraph({ text: `Email: ${data.personalInfo.email}` }),
+    new Paragraph({ text: `Contact: ${data.personalInfo.contact}` }),
 
-                    // Work Experience
-                    ...(docxParts.workExperience.length > 0
-                        ? [
-                              new Paragraph({ text: "Work Experience", heading: "Heading2" }),
-                              ...docxParts.workExperience.map((exp: any) =>
-                                  new Paragraph({
-                                      children: [
-                                          ...(exp.role ?? []).map((r: any) => createTextRun(r)),
-                                          new TextRun({ text: "\n" }),
-                                          ...(exp.description ?? []).map((d: any) =>
-                                              createTextRun(d)
-                                          ),
-                                      ],
-                                  })
-                              ),
-                          ]
-                        : []),
+    // Address
+    new Paragraph({ text: `Address: ${data.personalInfo.address}` }),
 
-                    // Projects
-                    ...(docxParts.projects.length > 0
-                        ? [
-                              new Paragraph({ text: "Projects", heading: "Heading2" }),
-                              ...docxParts.projects.map((p: any) =>
-                                  new Paragraph({
-                                      children: [
-                                          ...(p.title ?? []).map((t: any) => createTextRun(t)),
-                                          new TextRun({ text: "\n" }),
-                                          ...(p.description ?? []).map((d: any) =>
-                                              createTextRun(d)
-                                          ),
-                                      ],
-                                  })
-                              ),
-                          ]
-                        : []),
+    // Optional links (only if they exist)
+    ...(data.personalInfo.linkedin
+        ? [new Paragraph({ text: `LinkedIn: ${data.personalInfo.linkedin}` })]
+        : []),
+    ...(data.personalInfo.github
+        ? [new Paragraph({ text: `GitHub: ${data.personalInfo.github}` })]
+        : []),
+    ...(data.personalInfo.portfolio
+        ? [new Paragraph({ text: `Portfolio: ${data.personalInfo.portfolio}` })]
+        : []),
 
-                    // Achievements
-                    ...(docxParts.achievements.length > 0
-                        ? [
-                              new Paragraph({ text: "Achievements", heading: "Heading2" }),
-                              ...docxParts.achievements.map((ach: any) =>
-                                  new Paragraph({
-                                      children: (ach ?? []).map((a: any, i: number) =>
-                                          createTextRun(a, i < (ach?.length ?? 0) - 1)
-                                      ),
-                                  })
-                              ),
-                          ]
-                        : []),
-                ],
-            },
-        ],
+    // Optional social links array
+    ...(data.personalInfo.socialLinks && data.personalInfo.socialLinks.length
+        ? [
+            new Paragraph({
+            text: `Social Links: ${data.personalInfo.socialLinks.join(", ")}`,
+            }),
+        ]
+        : [])
+  );
+
+  // PROFESSIONAL SUMMARY
+  if (parts.summary.length > 0) {
+    children.push(sectionHeading("Professional Summary"));
+    children.push(...bulletListFromArray(parts.summary));
+  }
+
+  // SKILLS
+  if (data.skills?.length) {
+    children.push(sectionHeading("Skills"));
+    data.skills.forEach((skill) => {
+      children.push(...toRuns(skill).map((tr) => new Paragraph({ children: [tr] })));
     });
+  }
 
-    return await Packer.toBuffer(doc);
+  // WORK EXPERIENCE
+  if (parts.workExperience.length > 0) {
+    children.push(sectionHeading("Work Experience"));
+    parts.workExperience.forEach((exp) => {
+      if (exp.role || exp.company) {
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `${exp.role} @ ${exp.company}`, bold: true }),
+            ],
+          })
+        );
+      }
+      if (exp.description) {
+        children.push(...bulletListFromArray(exp.description));
+      }
+    });
+  }
+
+  // PROJECTS
+  if (parts.projects.length > 0) {
+    children.push(sectionHeading("Projects"));
+    parts.projects.forEach((proj) => {
+      if (proj.title) {
+        children.push(new Paragraph({ children: toRuns(proj.title) }));
+      }
+      if (proj.description) {
+        children.push(...bulletListFromArray(proj.description));
+      }
+    });
+  }
+
+  // ACHIEVEMENTS
+  if (parts.achievements.length > 0) {
+    children.push(sectionHeading("Achievements"));
+    children.push(...bulletListFromArray(parts.achievements));
+  }
+
+  const doc = new Document({
+    sections: [{ children }],
+  });
+
+  return await Packer.toBuffer(doc);
 };
