@@ -6,8 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "copy-templates": "cpy \"src/templates/**/*\" dist/templates",
-    "build": "npm run clean && tsc && npm run copy-templates",
-    "postinstall": "npx playwright install chromium",
+    "build": "npm run clean && tsc && npm run copy-templates && npx playwright install chromium",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts"
   },
