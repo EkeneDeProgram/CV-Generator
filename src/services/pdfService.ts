@@ -1,33 +1,40 @@
-import { chromium } from "playwright";
 import path from "path";
-import fs from "fs";
 import ejs from "ejs";
+import pdf from "html-pdf-node";
 import { CVData } from "../models/cvTypes";
 
-export const generatePDF = async (data: CVData): Promise<Buffer> => {
-  // Load template
-  const templateFilePath = path.join(
-    __dirname,
-    "../templates",
-    `${data.template}.ejs`
-  );
-  const templateContent = fs.readFileSync(templateFilePath, "utf-8");
-  const htmlContent = ejs.render(templateContent, { data });
+type TemplateName = "modern" | "card" | "twoColumn";
 
-  // Launch local bundled Chromium
-  const browser = await chromium.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
-  });
+/**
+ * Generates PDF from EJS template using html-pdf-node
+ * @param cvData - CV data
+ * @param template - template name ("modern" | "card" | "twoColumn")
+ * @returns Promise<Buffer> - PDF as buffer
+ */
+export async function generatePDF(cvData: CVData, template: TemplateName): Promise<Buffer> {
+  try {
+    // Path to EJS template
+    const templatePath = path.join(__dirname, "../templates", `${template}.ejs`);
 
-  const page = await browser.newPage();
-  await page.setContent(htmlContent, { waitUntil: "networkidle" });
+    // Render HTML from EJS
+    const html = await ejs.renderFile(templatePath, { data: cvData });
 
-  const pdfBuffer = await page.pdf({
-    format: "A4",
-    printBackground: true,
-  });
+    // html-pdf-node expects a "file" object
+    const file = { content: html };
 
-  await browser.close();
-  return pdfBuffer;
-};
+    // PDF options
+    const options = {
+      format: "A4",
+      margin: { top: "10mm", right: "10mm", bottom: "10mm", left: "10mm" },
+      printBackground: true,
+    };
+
+    // Generate PDF
+    const pdfBuffer = await pdf.generatePdf(file, options);
+
+    return pdfBuffer;
+  } catch (err) {
+    console.error("PDF generation failed:", err);
+    throw err;
+  }
+}

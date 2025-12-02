@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "copy-templates": "cpy \"src/templates/**/*\" dist/templates",
-    "build": "npm run clean && tsc && npm run copy-templates && npx playwright install",
+    "build": "npm run clean && tsc && npm run copy-templates",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts"
   },
@@ -20,7 +20,7 @@
     "dotenv": "^17.2.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "playwright": "^1.57.0",
+    "html-pdf-node": "^1.0.8",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
@@ -28,6 +28,7 @@
     "@types/cors": "^2.8.19",
     "@types/ejs": "^3.1.5",
     "@types/minimatch": "^6.0.0",
+    "@types/pdfkit": "^0.17.4",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "cpy-cli": "^3.1.1",

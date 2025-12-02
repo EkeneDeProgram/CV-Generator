@@ -26,6 +26,23 @@ router.post("/preview", previewCV);
 
 /**
  * @swagger
+ * /api/cv/generate:
+ *   post:
+ *     summary: Generate CV JSON
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CVData'
+ *     responses:
+ *       200:
+ *         description: CV JSON returned
+ */
+router.post("/generate", generateCV);
+
+/**
+ * @swagger
  * /api/cv/download/pdf:
  *   post:
  *     summary: Download CV as PDF
@@ -38,6 +55,11 @@ router.post("/preview", previewCV);
  *     responses:
  *       200:
  *         description: PDF file downloaded
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
  */
 router.post("/download/pdf", downloadPDF);
 
@@ -55,6 +77,11 @@ router.post("/download/pdf", downloadPDF);
  *     responses:
  *       200:
  *         description: DOCX file downloaded
+ *         content:
+ *           application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+ *             schema:
+ *               type: string
+ *               format: binary
  */
 router.post("/download/docx", downloadDOCX);
 
