@@ -5,9 +5,7 @@ import { generateDOCX } from "../services/docxService";
 import { aiFormatCV } from "../services/aiFormatter";
 import { logger } from "../utils/logger";
 
-// ===============================
 // PREVIEW CV (HTML)
-// ===============================
 export const previewCV = (req: Request, res: Response) => {
   try {
     const { keywords = [], ...cvData } = req.body;
@@ -21,9 +19,7 @@ export const previewCV = (req: Request, res: Response) => {
   }
 };
 
-// ===============================
 // RETURN FORMATTED JSON
-// ===============================
 export const generateCV = (req: Request, res: Response) => {
   try {
     const { keywords = [], ...cvData } = req.body;
@@ -37,9 +33,7 @@ export const generateCV = (req: Request, res: Response) => {
   }
 };
 
-// ===============================
 // DOWNLOAD PDF FILE
-// ===============================
 export const downloadPDF = async (req: Request, res: Response) => {
   try {
     const { keywords = [], ...cvData } = req.body;
@@ -61,9 +55,7 @@ export const downloadPDF = async (req: Request, res: Response) => {
   }
 };
 
-// ===============================
 // DOWNLOAD DOCX FILE
-// ===============================
 export const downloadDOCX = async (req: Request, res: Response) => {
   try {
     const { keywords = [], ...cvData } = req.body;
