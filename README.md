@@ -9,7 +9,7 @@ Supports **EJS-based HTML templates**, **PDF/DOCX export**, and **AI-powered key
 
 - 🎨 **Multiple Templates** – Classic, Modern, Creative, Two-Column, Card-Based, and Pro variants.  
 - 🖥 **Preview in Browser** – Render resumes dynamically using **EJS templates**.  
-- 📑 **Export Options** – Download CV as **PDF** (via Puppeteer) or **DOCX** (via docx library).  
+- 📑 **Export Options** – Download CV as **PDF** (via html-pdf-node) or **DOCX** (via docx library).  
 - 🤖 **AI Formatter** – Auto-enhance CV with keywords for ATS compliance.  
 - 🔧 **Customizable** – Easily extend with new templates, themes, and font styles.  
 - 📡 **REST API Support** – Integrate with any frontend or external service.  
